@@ -19,6 +19,7 @@ func (t *tasks) addTask(title, priority string) string {
 	task := task{Title: format(title), Priority: format(priority), Id: lastId + 1, Status: "todo"}
 	(*t) = append((*t), task)
 
+	defer saveTasks(FilePath)
 	return fmt.Sprintf("Task '%v' added with ID %d", task.Title, task.Id)
 }
 
@@ -30,6 +31,7 @@ func (t *tasks) deleteTask(id int) string {
 		*t = slices.Delete(*t, i, i+1)
 	}
 
+	defer saveTasks(FilePath)
 	return fmt.Sprintf("Task ID %d deleted.", (*t)[i].Id)
 }
 
@@ -48,6 +50,7 @@ func (t *tasks) updateTask(id int, field string, update string) string {
 		s = fmt.Sprintf("Task ID %d updated to %s '%s'", (*t)[i].Id, field, (*t)[i].Title)
 	}
 
+	defer saveTasks(FilePath)
 	return s
 }
 
