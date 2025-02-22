@@ -24,7 +24,11 @@ func (t *tasks) addTask(title, priority string) string {
 
 func (t *tasks) deleteTask(id int) string {
 	i := searchTaskById(*t, id)
-	*t = append((*t)[:i], (*t)[i+1:]...)
+	if i == len(*t)-1 {
+		*t = (*t)[:i]
+	} else {
+		*t = slices.Delete(*t, i, i+1)
+	}
 
 	return fmt.Sprintf("Task ID %d deleted.", (*t)[i].Id)
 }
